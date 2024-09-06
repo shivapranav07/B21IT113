@@ -67,14 +67,16 @@ app.get('/numbers/:type', async (req, res) => {
 
     // Update previous and current states
     previousState = currentState;
-    currentState = numbers;
+    currentState = filteredCurrentState;
 
-    // Calculate the average of the current numbers
-    const avg = numbers.reduce((sum, num) => sum + num, 0) / numbers.length;
+    const filteredCurrentState = currentState.filter(num => !previousState.includes(num));
+
+    // Calculate the average of the filtered current numbers
+    const avg = filteredCurrentState.reduce((sum, num) => sum + num, 0) / filteredCurrentState.length;
 
     const result = {
       type: typeDescriptions[type],
-      numbers: numbers,
+      numbers: filteredCurrentState,
       windowsprevState: previousState,
       windowscurrentState: currentState,
       avg: avg,
